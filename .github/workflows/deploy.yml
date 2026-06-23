@@ -39,13 +39,16 @@ jobs:
         username: ${{ secrets.SSH_USER }}     
         key: ${{ secrets.SSH_PRIVATE_KEY }}       
         port: 22
+        envs: DEPLOY_PATH
         script: |
           set -e # Stops the script immediately if any command fails
           
-          cd ${{ secrets.DEPLOY_PATH }}
+          cd "$DEPLOY_PATH"
           
           git pull origin main
           
           docker compose build
           
           docker compose up -d
+      env:
+        DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
